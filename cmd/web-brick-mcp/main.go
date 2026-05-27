@@ -2,7 +2,9 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
+	"os"
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
@@ -87,11 +89,36 @@ This is not a framework. It is a discipline that can be applied in any environme
 	}, nil
 }
 
+const version = "v1.0.0"
+
 func main() {
+	for _, arg := range os.Args[1:] {
+		if arg == "-help" || arg == "--help" {
+			fmt.Println("web-brick-mcp - MCP server for the Web Brick Manifesto")
+			fmt.Println()
+			fmt.Println("Description:")
+			fmt.Println("  Exposes the Web Brick Manifesto methodology as an MCP tool.")
+			fmt.Println("  The Web Brick Manifesto is a philosophy of radical simplicity for web development,")
+			fmt.Println("  inspired by Lego blocks: simple, self-contained, and predictable components.")
+			fmt.Println()
+			fmt.Println("Usage:")
+			fmt.Println("  web-brick-mcp [flags]")
+			fmt.Println()
+			fmt.Println("Flags:")
+			fmt.Println("  -help      Show this help message and exit")
+			fmt.Println("  -version   Show version and exit")
+			os.Exit(0)
+		}
+		if arg == "-version" || arg == "--version" {
+			fmt.Println(version)
+			os.Exit(0)
+		}
+	}
+
 	// Create a server with the web-brick-manifesto tool
 	server := mcp.NewServer(&mcp.Implementation{
-		Name:    "web-brick-manifesto", 
-		Version: "v1.0.0",
+		Name:    "web-brick-manifesto",
+		Version: version,
 	}, nil)
 	
 	mcp.AddTool(server, &mcp.Tool{
